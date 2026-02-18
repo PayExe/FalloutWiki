@@ -1,0 +1,7 @@
+.env
+*.exe
+fallout-vault
+nul
+*.log
+.DS_Store
+Thumbs.db

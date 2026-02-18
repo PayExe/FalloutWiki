@@ -1,0 +1,110 @@
+{{define "home.html"}}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fallout Vault - Accueil</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="scanlines"></div>
+    <div class="container">
+        <header class="header">
+            <div class="pip-boy-frame">
+                <h1 class="site-title">
+                    <span class="vault-tec">VAULT-TEC</span>
+                    <span class="subtitle">FALLOUT DATABASE</span>
+                </h1>
+                <nav class="nav">
+                    <a href="/" class="nav-link">◉ ACCUEIL</a>
+                    <a href="/games" class="nav-link">◉ CATALOGUE</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="main-content">
+<div class="home-container">
+    <div class="terminal-box glow-box">
+        <div class="terminal-header">
+            <span class="blink">█</span> SYSTÈME D'ACCUEIL VAULT-TEC
+        </div>
+        <div class="terminal-content">
+            <p class="ascii-art">
+    ___________     __    __                  __   
+   / ____/   | |   / /   / /   ____  __  __/ /_  
+  / /_  / /| | |  / /   / /   / __ \/ / / / __/  
+ / __/ / ___ |/ /_/ /___/ /___/ /_/ / /_/ / /_    
+/_/   /_/  |_|\____/____/_____/\____/\__,_/\__/   
+            </p>
+            <div class="welcome-text">
+                <p class="blink-slow">>>> BIENVENUE DANS LA BASE DE DONNÉES FALLOUT <<<</p>
+                <p>Recensement complet des jeux de la franchise post-apocalyptique</p>
+            </div>
+        </div>
+    </div>
+
+    {{if .error}}
+    <div class="error-box">
+        <p>⚠ ERREUR SYSTÈME: {{.error}}</p>
+    </div>
+    {{else}}
+    <div class="stats-grid">
+        <div class="stat-card pip-boy-frame">
+            <div class="stat-icon">📊</div>
+            <div class="stat-value">{{.stats.TotalGames}}</div>
+            <div class="stat-label">JEUX RECENSÉS</div>
+        </div>
+
+        <div class="stat-card pip-boy-frame">
+            <div class="stat-icon">📅</div>
+            <div class="stat-value">{{.stats.EarliestYear}}</div>
+            <div class="stat-label">PREMIÈRE SORTIE</div>
+        </div>
+
+        <div class="stat-card pip-boy-frame">
+            <div class="stat-icon">🎮</div>
+            <div class="stat-value">{{.stats.LatestYear}}</div>
+            <div class="stat-label">DERNIÈRE SORTIE</div>
+        </div>
+
+        <div class="stat-card pip-boy-frame">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-value">{{printf "%.1f" .stats.AvgRating}}</div>
+            <div class="stat-label">NOTE MOYENNE</div>
+        </div>
+    </div>
+    {{end}}
+
+    <div class="cta-section">
+        <a href="/games" class="cta-button">
+            <span class="button-glow">▶</span> ACCÉDER AU CATALOGUE COMPLET
+        </a>
+    </div>
+
+    <div class="info-box pip-boy-frame">
+        <h2 class="section-title">À PROPOS DU PROJET</h2>
+        <p>Cette base de données recense tous les jeux de la franchise Fallout, du RPG isométrique original de 1997 aux titres modernes en 3D. Chaque entrée contient des informations détaillées sur le développeur, les plateformes, et les notes des critiques.</p>
+        <div class="tech-stack">
+            <span class="tech-badge">Go + Gin</span>
+            <span class="tech-badge">PostgreSQL</span>
+            <span class="tech-badge">HTML/CSS</span>
+            <span class="tech-badge">Scalingo</span>
+        </div>
+    </div>
+</div>
+
+        </main>
+
+        <footer class="footer">
+            <div class="pip-boy-frame">
+                <p>⚠ VAULT-TEC DATABASE SYSTEM v3.0 ⚠</p>
+                <p class="footer-disclaimer">Site non officiel - Non affilié à Bethesda Softworks ou Interplay Entertainment</p>
+                <p class="footer-warning">⚡ WAR. WAR NEVER CHANGES. ⚡</p>
+            </div>
+        </footer>
+    </div>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
+{{end}}

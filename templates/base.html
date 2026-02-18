@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{block "title" .}}Fallout Vault Database{{end}}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="scanlines"></div>
+    <div class="container">
+        <header class="header">
+            <div class="pip-boy-frame">
+                <h1 class="site-title">
+                    <span class="vault-tec">VAULT-TEC</span>
+                    <span class="subtitle">FALLOUT DATABASE</span>
+                </h1>
+                <nav class="nav">
+                    <a href="/" class="nav-link">◉ ACCUEIL</a>
+                    <a href="/games" class="nav-link">◉ CATALOGUE</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="main-content">
+            {{block "content" .}}{{end}}
+        </main>
+
+        <footer class="footer">
+            <div class="pip-boy-frame">
+                <p>⚠ VAULT-TEC DATABASE SYSTEM v3.0 ⚠</p>
+                <p>Propulsé par Gin & PostgreSQL | Déployé sur Scalingo</p>
+                <p class="footer-warning">⚡ WAR. WAR NEVER CHANGES. ⚡</p>
+            </div>
+        </footer>
+    </div>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
