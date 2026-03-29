@@ -1,39 +1,47 @@
+{{define "base.html"}}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{block "title" .}}Fallout Vault Database{{end}}</title>
+    <title>{{if .PageTitle}}{{.PageTitle}}{{else}}Fallout Vault{{end}}</title>
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <div class="scanlines"></div>
-    <div class="container">
-        <header class="header">
-            <div class="pip-boy-frame">
-                <h1 class="site-title">
-                    <span class="vault-tec">VAULT-TEC</span>
-                    <span class="subtitle">FALLOUT DATABASE</span>
-                </h1>
-                <nav class="nav">
-                    <a href="/" class="nav-link">◉ ACCUEIL</a>
-                    <a href="/games" class="nav-link">◉ CATALOGUE</a>
-                </nav>
-            </div>
-        </header>
+    <header class="site-header">
+        <div class="shell header-shell">
+            <a href="/" class="brand">
+                <span class="brand-kicker">Wasteland Archive</span>
+                <span class="brand-title">Fallout Vault</span>
+            </a>
+            <nav class="nav">
+                <a href="/" class="nav-link {{if eq .ActivePage "home"}}active{{end}}">Accueil</a>
+                <a href="/games" class="nav-link {{if eq .ActivePage "catalog"}}active{{end}}">Catalogue</a>
+                <a href="/admin/games" class="nav-link {{if eq .ActivePage "admin"}}active{{end}}">Admin</a>
+                <a href="/credits" class="nav-link {{if eq .ActivePage "credits"}}active{{end}}">Crédits</a>
+            </nav>
+        </div>
+    </header>
 
-        <main class="main-content">
-            {{block "content" .}}{{end}}
-        </main>
+    <main class="shell main-shell">
+        {{if eq .ContentPage "home_content"}}{{template "home_content" .}}{{end}}
+        {{if eq .ContentPage "games_content"}}{{template "games_content" .}}{{end}}
+        {{if eq .ContentPage "game_detail_content"}}{{template "game_detail_content" .}}{{end}}
+        {{if eq .ContentPage "credits_content"}}{{template "credits_content" .}}{{end}}
+        {{if eq .ContentPage "admin_games_content"}}{{template "admin_games_content" .}}{{end}}
+        {{if eq .ContentPage "admin_game_form_content"}}{{template "admin_game_form_content" .}}{{end}}
+    </main>
 
-        <footer class="footer">
-            <div class="pip-boy-frame">
-                <p>⚠ VAULT-TEC DATABASE SYSTEM v3.0 ⚠</p>
-                <p>Propulsé par Gin & PostgreSQL | Déployé sur Scalingo</p>
-                <p class="footer-warning">⚡ WAR. WAR NEVER CHANGES. ⚡</p>
-            </div>
-        </footer>
-    </div>
+    <footer class="site-footer">
+        <div class="shell footer-inner">
+            <p>Site vitrine non officiel dédié a Fallout.</p>
+            <p>Inspiré de Bethesda, Interplay et de la culture wasteland.</p>
+        </div>
+    </footer>
+
     <script src="/static/js/main.js"></script>
 </body>
 </html>
+{{end}}
+
+{{define "base"}}{{template "base.html" .}}{{end}}

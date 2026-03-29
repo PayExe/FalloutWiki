@@ -45,6 +45,13 @@ func main() {
 	router.GET("/", handlers.HomeHandler)
 	router.GET("/games", handlers.GamesListHandler)
 	router.GET("/games/:id", handlers.GameDetailHandler)
+	router.GET("/admin/games", handlers.AdminGamesHandler)
+	router.GET("/admin/games/new", handlers.AdminGameNewHandler)
+	router.POST("/admin/games", handlers.AdminGameCreateHandler)
+	router.GET("/admin/games/:id/edit", handlers.AdminGameEditHandler)
+	router.POST("/admin/games/:id/update", handlers.AdminGameUpdateHandler)
+	router.POST("/admin/games/:id/delete", handlers.AdminGameDeleteHandler)
+	router.GET("/credits", handlers.CreditsHandler)
 
 	// Récupération du port depuis les variables d'environnement (Scalingo)
 	port := os.Getenv("PORT")

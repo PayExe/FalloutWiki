@@ -1,0 +1,60 @@
+{{define "admin_games.html"}}{{template "base.html" .}}{{end}}
+
+{{define "admin_games_content"}}
+<section class="page-heading card reveal pad-card">
+    <div>
+        <p class="eyebrow">Admin</p>
+        <h1>Gestion des jeux</h1>
+        <p>CRUD minimal pour valider la base de données du projet.</p>
+    </div>
+    <div class="admin-toolbar">
+        <span class="admin-count">{{len .Games}} jeux</span>
+        <a href="/admin/games/new" class="button primary">Ajouter un jeu</a>
+    </div>
+</section>
+
+{{if .Error}}
+<section class="card reveal pad-card empty-state">
+    <h2>Erreur</h2>
+    <p>{{.Error}}</p>
+</section>
+{{end}}
+
+<section class="card reveal pad-card admin-panel">
+    <div class="table-wrap">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Titre</th>
+                    <th>Type</th>
+                    <th>Année</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{if .Games}}
+                {{range .Games}}
+                <tr>
+                    <td>{{.ID}}</td>
+                    <td>{{.Title}}</td>
+                    <td>{{.GameType}}</td>
+                    <td>{{.ReleaseYear}}</td>
+                    <td class="admin-actions">
+                        <a class="button ghost" href="/admin/games/{{.ID}}/edit">Modifier</a>
+                        <form method="post" action="/admin/games/{{.ID}}/delete" onsubmit="return confirm('Supprimer ce jeu ?');">
+                            <button class="button danger" type="submit">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+                {{end}}
+                {{else}}
+                <tr>
+                    <td colspan="5" class="admin-empty">Aucun jeu en base.</td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
+</section>
+{{end}}

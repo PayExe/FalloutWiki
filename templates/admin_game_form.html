@@ -1,0 +1,33 @@
+{{define "admin_game_form.html"}}{{template "base.html" .}}{{end}}
+
+{{define "admin_game_form_content"}}
+<section class="card reveal pad-card admin-hero">
+    <div class="admin-hero-copy">
+        <p class="eyebrow">Admin</p>
+        <h1>{{if .IsEdit}}Modifier{{else}}Créer{{end}} un jeu</h1>
+        <p class="admin-note">Les changements vont directement dans la base de données liée à `DATABASE_URL`.</p>
+    </div>
+</section>
+
+<section class="card reveal delay-1 pad-card">
+    {{if .Error}}<p class="error-text">{{.Error}}</p>{{end}}
+
+    <form method="post" action="{{.ActionURL}}" class="game-form">
+        <div class="form-grid">
+            <label><span>Titre</span><input class="input" name="title" value="{{.Game.Title}}" required></label>
+            <label><span>Type</span><input class="input" name="game_type" value="{{.Game.GameType}}" required></label>
+            <label class="span-2"><span>Description</span><textarea class="input" name="description" required>{{.Game.Description}}</textarea></label>
+            <label><span>Année</span><input class="input" name="release_year" type="number" value="{{.Game.ReleaseYear}}" required></label>
+            <label><span>Développeur</span><input class="input" name="developer" value="{{.Game.Developer}}" required></label>
+            <label><span>Plateformes</span><input class="input" name="platforms" value="{{.Game.Platforms}}" required></label>
+            <label><span>Note</span><input class="input" name="rating" type="number" step="0.1" value="{{.Game.Rating}}" required></label>
+            <label class="span-2"><span>Image URL</span><input class="input" name="image_url" value="{{.Game.ImageURL}}" required></label>
+            <label class="span-2"><span>Tags</span><input class="input" name="tags" value="{{.Game.Tags}}"></label>
+        </div>
+        <div class="hero-actions">
+            <button class="button primary" type="submit">Enregistrer</button>
+            <a class="button ghost" href="/admin/games">Retour</a>
+        </div>
+    </form>
+</section>
+{{end}}

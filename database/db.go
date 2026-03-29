@@ -66,6 +66,7 @@ func SeedData() error {
 			Platforms:   "PC, Mac",
 			Rating:      9.0,
 			ImageURL:    "/static/images/fallout1.jpg",
+			Tags:        "classic, isometric, rpg, vault, wasteland",
 		},
 		{
 			Title:       "Fallout 2",
@@ -76,6 +77,7 @@ func SeedData() error {
 			Platforms:   "PC, Mac",
 			Rating:      9.2,
 			ImageURL:    "/static/images/fallout2.jpg",
+			Tags:        "classic, isometric, rpg, black isle, wasteland",
 		},
 		{
 			Title:       "Fallout Tactics",
@@ -86,6 +88,7 @@ func SeedData() error {
 			Platforms:   "PC",
 			Rating:      7.5,
 			ImageURL:    "/static/images/fallout_tactics.jpg",
+			Tags:        "tactical, squad, brotherhood, classic, strategy",
 		},
 		{
 			Title:       "Fallout 3",
@@ -96,6 +99,7 @@ func SeedData() error {
 			Platforms:   "PC, Xbox 360, PS3",
 			Rating:      9.1,
 			ImageURL:    "/static/images/fallout3.jpg",
+			Tags:        "bethesda, vats, wasteland, action rpg, capital wasteland",
 		},
 		{
 			Title:       "Fallout: New Vegas",
@@ -106,6 +110,7 @@ func SeedData() error {
 			Platforms:   "PC, Xbox 360, PS3",
 			Rating:      9.5,
 			ImageURL:    "/static/images/fallout_new_vegas.jpg",
+			Tags:        "obsidian, mojave, factions, dialogue, action rpg",
 		},
 		{
 			Title:       "Fallout 4",
@@ -116,6 +121,7 @@ func SeedData() error {
 			Platforms:   "PC, Xbox One, PS4",
 			Rating:      8.5,
 			ImageURL:    "/static/images/fallout4.jpg",
+			Tags:        "bethesda, settlements, crafting, action rpg, commonwealth",
 		},
 		{
 			Title:       "Fallout 76",
@@ -126,6 +132,7 @@ func SeedData() error {
 			Platforms:   "PC, Xbox One, PS4",
 			Rating:      6.5,
 			ImageURL:    "/static/images/fallout76.jpg",
+			Tags:        "bethesda, multiplayer, online, appalachia, survival",
 		},
 		{
 			Title:       "Fallout Shelter",
@@ -136,6 +143,7 @@ func SeedData() error {
 			Platforms:   "iOS, Android, PC, Xbox, PS4, Switch",
 			Rating:      7.8,
 			ImageURL:    "/static/images/fallout_shelter.png",
+			Tags:        "management, vault, mobile, strategy, bethesda",
 		},
 	}
 

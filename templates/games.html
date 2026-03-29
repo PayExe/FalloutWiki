@@ -1,122 +1,64 @@
-{{define "games.html"}}
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catalogue des Jeux Fallout</title>
-    <link rel="stylesheet" href="/static/css/style.css">
-</head>
-<body>
-    <div class="scanlines"></div>
-    <div class="container">
-        <header class="header">
-            <div class="pip-boy-frame">
-                <h1 class="site-title">
-                    <span class="vault-tec">VAULT-TEC</span>
-                    <span class="subtitle">FALLOUT DATABASE</span>
-                </h1>
-                <nav class="nav">
-                    <a href="/" class="nav-link">◉ ACCUEIL</a>
-                    <a href="/games" class="nav-link">◉ CATALOGUE</a>
-                </nav>
-            </div>
-        </header>
+{{define "games.html"}}{{template "base.html" .}}{{end}}
 
-        <main class="main-content">
-<div class="games-container">
-    <div class="terminal-box glow-box">
-        <div class="terminal-header">
-            <span class="blink">█</span> CATALOGUE FALLOUT - BASE DE DONNÉES
+{{define "games_content"}}
+<section class="page-heading card reveal pad-card">
+    <div>
+        <p class="eyebrow">Catalogue</p>
+        <h1>Liste simple des jeux Fallout.</h1>
+    </div>
+    <div class="page-meta">
+        <span>{{.ResultCount}} affichés</span>
+        <span>{{.TotalCount}} au total</span>
+    </div>
+</section>
+
+<section class="filters card reveal delay-1 pad-card">
+    <form method="get" action="/games" class="filters-form">
+        <input type="search" name="q" value="{{.SearchQuery}}" placeholder="Rechercher un jeu, un studio, un tag..." class="input">
+        <select name="tag" class="input">
+            <option value="">Tous les tags</option>
+            {{range .AllTags}}<option value="{{.}}" {{if eq . $.SelectedTag}}selected{{end}}>{{.}}</option>{{end}}
+        </select>
+        <select name="type" class="input">
+            <option value="">Tous les types</option>
+            {{range .AllTypes}}<option value="{{.}}" {{if eq . $.SelectedType}}selected{{end}}>{{.}}</option>{{end}}
+        </select>
+        <select name="year" class="input">
+            <option value="">Toutes les années</option>
+            {{range .AllYears}}<option value="{{.}}" {{if eq (printf "%d" .) $.SelectedYear}}selected{{end}}>{{.}}</option>{{end}}
+        </select>
+        <button class="button primary" type="submit">Filtrer</button>
+        <a class="button ghost" href="/games">Reset</a>
+    </form>
+</section>
+
+{{if .Games}}
+<section class="game-grid">
+    {{range .Games}}
+    <article class="game-card card reveal">
+        <a href="/games/{{.ID}}" class="game-cover-wrap">
+            <img class="game-cover" src="{{.ImageURL}}" alt="{{.Title}}">
+            <span class="year-badge">{{.ReleaseYear}}</span>
+        </a>
+        <div class="game-body">
+            <div class="game-topline">
+                <h2>{{.Title}}</h2>
+                <span class="rating">{{printf "%.1f" .Rating}}</span>
+            </div>
+                <p class="muted">{{.GameType}} · {{.Developer}}</p>
+                <p>{{if gt (len .Description) 150}}{{slice .Description 0 150}}...{{else}}{{.Description}}{{end}}</p>
+            <div class="tag-list">
+                {{range .Tags}}<span class="tag">{{.}}</span>{{end}}
+            </div>
+            <a href="/games/{{.ID}}" class="button ghost">Voir la fiche</a>
         </div>
-    </div>
-
-    <!-- Filtres -->
-    <div class="filters-section pip-boy-frame">
-        <h3 class="filter-title">▼ FILTRES DE RECHERCHE</h3>
-        <form action="/games" method="get" class="filters-form">
-            <div class="filter-group">
-                <label for="type">TYPE DE JEU:</label>
-                <select name="type" id="type" class="filter-select">
-                    <option value="">Tous les types</option>
-                    {{range .gameTypes}}
-                    <option value="{{.}}" {{if eq . $.typeFilter}}selected{{end}}>{{.}}</option>
-                    {{end}}
-                </select>
-            </div>
-
-            <div class="filter-group">
-                <label for="year">ANNÉE:</label>
-                <select name="year" id="year" class="filter-select">
-                    <option value="">Toutes les années</option>
-                    {{range .years}}
-                    <option value="{{.}}" {{if eq (printf "%d" .) $.yearFilter}}selected{{end}}>{{.}}</option>
-                    {{end}}
-                </select>
-            </div>
-
-            <button type="submit" class="filter-button">◉ APPLIQUER</button>
-            <a href="/games" class="filter-reset">↻ RÉINITIALISER</a>
-        </form>
-    </div>
-
-    {{if .error}}
-    <div class="error-box">
-        <p>⚠ ERREUR: {{.error}}</p>
-    </div>
-    {{else if not .games}}
-    <div class="no-results pip-boy-frame">
-        <p>⚠ AUCUN JEU TROUVÉ AVEC CES CRITÈRES</p>
-    </div>
-    {{else}}
-    <!-- Grille de jeux -->
-    <div class="games-grid">
-        {{range .games}}
-        <div class="game-card pip-boy-frame">
-            <div class="game-image-container">
-                {{if .ImageURL}}
-                <img src="{{.ImageURL}}" alt="{{.Title}}" class="game-image" onerror="this.src='/static/images/fallout-default.png'">
-                {{else}}
-                <div class="game-image-placeholder">
-                    <span class="placeholder-icon">🎮</span>
-                </div>
-                {{end}}
-                <div class="game-year-badge">{{.ReleaseYear}}</div>
-            </div>
-            
-            <div class="game-info">
-                <h3 class="game-title">{{.Title}}</h3>
-                <div class="game-meta">
-                    <span class="game-type-badge">{{.GameType}}</span>
-                    <span class="game-rating">⭐ {{printf "%.1f" .Rating}}/10</span>
-                </div>
-                <p class="game-developer">🏢 {{.Developer}}</p>
-                <p class="game-description-preview">{{if gt (len .Description) 120}}{{slice .Description 0 120}}...{{else}}{{.Description}}{{end}}</p>
-                <a href="/games/{{.ID}}" class="game-detail-link">
-                    ▶ VOIR LES DÉTAILS
-                </a>
-            </div>
-        </div>
-        {{end}}
-    </div>
-
-    <div class="results-count pip-boy-frame">
-        <p>✓ {{len .games}} jeu(x) affiché(s)</p>
-    </div>
+    </article>
     {{end}}
-</div>
-
-        </main>
-
-        <footer class="footer">
-            <div class="pip-boy-frame">
-                <p>⚠ VAULT-TEC DATABASE SYSTEM v3.0 ⚠</p>
-                <p class="footer-disclaimer">Site non officiel - Non affilié à Bethesda Softworks ou Interplay Entertainment</p>
-                <p class="footer-warning">⚡ WAR. WAR NEVER CHANGES. ⚡</p>
-            </div>
-        </footer>
-    </div>
-    <script src="/static/js/main.js"></script>
-</body>
-</html>
+</section>
+{{else}}
+<section class="card reveal pad-card empty-state">
+    <h2>Aucun résultat</h2>
+    <p>Change les filtres ou reviens au catalogue complet.</p>
+</section>
+{{end}}
 {{end}}

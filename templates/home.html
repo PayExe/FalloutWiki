@@ -1,110 +1,77 @@
-{{define "home.html"}}
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fallout Vault - Accueil</title>
-    <link rel="stylesheet" href="/static/css/style.css">
-</head>
-<body>
-    <div class="scanlines"></div>
-    <div class="container">
-        <header class="header">
-            <div class="pip-boy-frame">
-                <h1 class="site-title">
-                    <span class="vault-tec">VAULT-TEC</span>
-                    <span class="subtitle">FALLOUT DATABASE</span>
-                </h1>
-                <nav class="nav">
-                    <a href="/" class="nav-link">◉ ACCUEIL</a>
-                    <a href="/games" class="nav-link">◉ CATALOGUE</a>
-                </nav>
+{{define "home.html"}}{{template "base.html" .}}{{end}}
+
+{{define "home_content"}}
+<section class="archive-hero card reveal pad-card">
+    <div class="archive-intro">
+        <p class="eyebrow">Archive centrale / Fallout</p>
+        <h1>Journal d'archive de la saga Fallout.</h1>
+        <p class="lead">
+            Une porte d'entrée pensée comme une archive: contexte de la licence, repères temporels, jeux marquants,
+            puis accès direct au catalogue complet.
+        </p>
+        <div class="hero-actions">
+            <a href="/games" class="button primary">Entrer dans le catalogue</a>
+            <a href="{{.BethesdaURL}}" target="_blank" rel="noreferrer" class="button ghost">Bethesda</a>
+        </div>
+    </div>
+    <aside class="archive-panel">
+        <p class="eyebrow">Repères de licence</p>
+        <div class="archive-stats">
+            <div class="archive-stat"><strong>{{.Stats.TotalGames}}</strong><span>jeux recensés</span></div>
+            <div class="archive-stat"><strong>{{.Stats.EarliestYear}}</strong><span>premier opus</span></div>
+            <div class="archive-stat"><strong>{{.Stats.LatestYear}}</strong><span>dernier opus</span></div>
+            <div class="archive-stat"><strong>{{.Stats.DistinctTypes}}</strong><span>types de jeux</span></div>
+            <div class="archive-stat"><strong>{{printf "%.1f" .Stats.AverageRating}}</strong><span>note moyenne</span></div>
+            <div class="archive-stat"><strong>{{.Stats.BethesdaGames}}</strong><span>jeux Bethesda</span></div>
+        </div>
+    </aside>
+</section>
+
+<section class="archive-grid">
+    <article class="card reveal delay-1 pad-card">
+        <p class="eyebrow">Contexte</p>
+        <h2>Une licence culte du postapo</h2>
+        <p>
+            Des premiers Fallout isométriques à l'ère moderne, la franchise garde une identité forte: monde en ruines,
+            choix de dialogue, factions et exploration.
+        </p>
+    </article>
+    <article class="card reveal delay-2 pad-card">
+        <p class="eyebrow">Transmission</p>
+        <h2>Fallout, 1,2,3,4 et pleins d'autres</h2>
+        <p>
+            Cette archive met toute la licence au même niveau de lecture, avec un affichage simple et aéré.
+        </p>
+    </article>
+</section>
+
+<section class="card reveal pad-card featured-archive">
+    <div class="featured-head">
+        <div>
+            <p class="eyebrow">Dossiers marquants</p>
+            <h2>Trois jeux emblématiques de l'archive.</h2>
+        </div>
+        <a href="/games" class="button ghost">Voir tout le catalogue</a>
+    </div>
+    <div class="featured-grid">
+        {{range .FeaturedGames}}
+        <a href="/games/{{.ID}}" class="featured-item">
+            <img src="{{.ImageURL}}" alt="{{.Title}}">
+            <div>
+                <strong>{{.Title}}</strong>
+                <span>{{.ReleaseYear}} · {{.GameType}}</span>
             </div>
-        </header>
-
-        <main class="main-content">
-<div class="home-container">
-    <div class="terminal-box glow-box">
-        <div class="terminal-header">
-            <span class="blink">█</span> SYSTÈME D'ACCUEIL VAULT-TEC
-        </div>
-        <div class="terminal-content">
-            <p class="ascii-art">
-    ___________     __    __                  __   
-   / ____/   | |   / /   / /   ____  __  __/ /_  
-  / /_  / /| | |  / /   / /   / __ \/ / / / __/  
- / __/ / ___ |/ /_/ /___/ /___/ /_/ / /_/ / /_    
-/_/   /_/  |_|\____/____/_____/\____/\__,_/\__/   
-            </p>
-            <div class="welcome-text">
-                <p class="blink-slow">>>> BIENVENUE DANS LA BASE DE DONNÉES FALLOUT <<<</p>
-                <p>Recensement complet des jeux de la franchise post-apocalyptique</p>
-            </div>
-        </div>
-    </div>
-
-    {{if .error}}
-    <div class="error-box">
-        <p>⚠ ERREUR SYSTÈME: {{.error}}</p>
-    </div>
-    {{else}}
-    <div class="stats-grid">
-        <div class="stat-card pip-boy-frame">
-            <div class="stat-icon">📊</div>
-            <div class="stat-value">{{.stats.TotalGames}}</div>
-            <div class="stat-label">JEUX RECENSÉS</div>
-        </div>
-
-        <div class="stat-card pip-boy-frame">
-            <div class="stat-icon">📅</div>
-            <div class="stat-value">{{.stats.EarliestYear}}</div>
-            <div class="stat-label">PREMIÈRE SORTIE</div>
-        </div>
-
-        <div class="stat-card pip-boy-frame">
-            <div class="stat-icon">🎮</div>
-            <div class="stat-value">{{.stats.LatestYear}}</div>
-            <div class="stat-label">DERNIÈRE SORTIE</div>
-        </div>
-
-        <div class="stat-card pip-boy-frame">
-            <div class="stat-icon">⭐</div>
-            <div class="stat-value">{{printf "%.1f" .stats.AvgRating}}</div>
-            <div class="stat-label">NOTE MOYENNE</div>
-        </div>
-    </div>
-    {{end}}
-
-    <div class="cta-section">
-        <a href="/games" class="cta-button">
-            <span class="button-glow">▶</span> ACCÉDER AU CATALOGUE COMPLET
         </a>
+        {{end}}
     </div>
+</section>
 
-    <div class="info-box pip-boy-frame">
-        <h2 class="section-title">À PROPOS DU PROJET</h2>
-        <p>Cette base de données recense tous les jeux de la franchise Fallout, du RPG isométrique original de 1997 aux titres modernes en 3D. Chaque entrée contient des informations détaillées sur le développeur, les plateformes, et les notes des critiques.</p>
-        <div class="tech-stack">
-            <span class="tech-badge">Go + Gin</span>
-            <span class="tech-badge">PostgreSQL</span>
-            <span class="tech-badge">HTML/CSS</span>
-            <span class="tech-badge">Scalingo</span>
-        </div>
+<section class="catalog-cta card reveal delay-1 pad-card">
+    <div>
+        <p class="eyebrow">Accès archive</p>
+        <h2>Parcourir toutes les fiches Fallout.</h2>
+        <p>Filtres, tags, synopsis et détails complets pour chaque jeu.</p>
     </div>
-</div>
-
-        </main>
-
-        <footer class="footer">
-            <div class="pip-boy-frame">
-                <p>⚠ VAULT-TEC DATABASE SYSTEM v3.0 ⚠</p>
-                <p class="footer-disclaimer">Site non officiel - Non affilié à Bethesda Softworks ou Interplay Entertainment</p>
-                <p class="footer-warning">⚡ WAR. WAR NEVER CHANGES. ⚡</p>
-            </div>
-        </footer>
-    </div>
-    <script src="/static/js/main.js"></script>
-</body>
-</html>
+    <a href="/games" class="button primary">Explorer les jeux</a>
+</section>
 {{end}}

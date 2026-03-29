@@ -1,0 +1,45 @@
+{{define "credits.html"}}{{template "base.html" .}}{{end}}
+
+{{define "credits_content"}}
+<section class="card reveal pad-card credits-hero">
+    <div class="credits-hero-copy">
+        <p class="eyebrow">Crédits</p>
+        <h1>Un site d'archive fait par amour pour Fallout.</h1>
+        <p class="lead">
+            J'adore Fallout depuis petit. L'objectif ici: un site vitrine lisible, structuré, et fidèle à
+            l'ambiance de la licence.
+        </p>
+    </div>
+    <aside class="credits-hero-note">
+        <p class="eyebrow">Intentions</p>
+        <ul class="detail-list">
+            <li>Design sobre orienté archive.</li>
+            <li>Navigation rapide entre fiche et catalogue.</li>
+            <li>Données centrales visibles sans friction.</li>
+        </ul>
+    </aside>
+</section>
+
+<section class="credits-grid">
+    <article class="card reveal delay-1 pad-card credits-panel">
+        <p class="eyebrow">Technos</p>
+        <h2>Stack principal</h2>
+        <div class="tech-grid">{{range .TechStack}}<span class="tag">{{.}}</span>{{end}}</div>
+    </article>
+    <article class="card reveal delay-2 pad-card credits-panel">
+        <p class="eyebrow">Pourquoi ce projet</p>
+        <h2>Direction produit</h2>
+        <ul class="detail-list">{{range .Reasons}}<li>{{.}}</li>{{end}}</ul>
+    </article>
+</section>
+
+<section class="card reveal pad-card credits-foot">
+    <p class="eyebrow">Motivation</p>
+    <h2>Projet personnel et non officiel.</h2>
+    <ul class="detail-list">{{range .Notes}}<li>{{.}}</li>{{end}}</ul>
+    <div class="hero-actions credits-actions">
+        <a href="/games" class="button primary">Retour au catalogue</a>
+        <a href="{{.BethesdaURL}}" target="_blank" rel="noreferrer" class="button ghost">Bethesda</a>
+    </div>
+</section>
+{{end}}

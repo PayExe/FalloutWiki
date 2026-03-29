@@ -1,137 +1,80 @@
-{{define "game_detail.html"}}
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{if .game}}{{.game.Title}} - Détails{{else}}Jeu non trouvé{{end}}</title>
-    <link rel="stylesheet" href="/static/css/style.css">
-</head>
-<body>
-    <div class="scanlines"></div>
-    <div class="container">
-        <header class="header">
-            <div class="pip-boy-frame">
-                <h1 class="site-title">
-                    <span class="vault-tec">VAULT-TEC</span>
-                    <span class="subtitle">FALLOUT DATABASE</span>
-                </h1>
-                <nav class="nav">
-                    <a href="/" class="nav-link">◉ ACCUEIL</a>
-                    <a href="/games" class="nav-link">◉ CATALOGUE</a>
-                </nav>
-            </div>
-        </header>
+{{define "game_detail.html"}}{{template "base.html" .}}{{end}}
 
-        <main class="main-content">
-<div class="game-detail-container">
-    {{if .error}}
-    <div class="error-box">
-        <p>⚠ ERREUR: {{.error}}</p>
-        <a href="/games" class="back-link">← Retour au catalogue</a>
+{{define "game_detail_content"}}
+{{if .Error}}
+<section class="card reveal pad-card">
+    <h1>Fiche indisponible</h1>
+    <p>{{.Error}}</p>
+    <a href="/games" class="button primary">Retour au catalogue</a>
+</section>
+{{else}}
+<section class="detail-hero card reveal">
+    <div class="detail-hero-media">
+        <img src="{{.Game.ImageURL}}" alt="{{.Game.Title}}">
     </div>
-    {{else if .game}}
-    <div class="back-navigation">
-        <a href="/games" class="back-link">← RETOUR AU CATALOGUE</a>
-    </div>
-
-    <div class="game-detail-card pip-boy-frame">
-        <div class="terminal-header">
-            <span class="blink">█</span> DOSSIER: {{.game.Title}}
+    <div class="detail-hero-copy pad-card">
+        <p class="eyebrow">Dossier</p>
+        <h1>{{.Game.Title}}</h1>
+        <p class="lead">{{.Game.Description}}</p>
+        <div class="tag-list">
+            {{range .Game.Tags}}<span class="tag">{{.}}</span>{{end}}
         </div>
-
-        <div class="game-detail-content">
-            <div class="game-detail-left">
-                <div class="game-main-image">
-                    {{if .game.ImageURL}}
-                    <img src="{{.game.ImageURL}}" alt="{{.game.Title}}" class="game-detail-image" onerror="this.src='/static/images/fallout-default.png'">
-                    {{else}}
-                    <div class="game-detail-image-placeholder">
-                        <span class="placeholder-icon-large">🎮</span>
-                    </div>
-                    {{end}}
-                </div>
-                
-                <div class="game-info-card">
-                    <div class="info-row">
-                        <span class="info-label">▸ TYPE</span>
-                        <span class="info-value">{{.game.GameType}}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">▸ ANNÉE</span>
-                        <span class="info-value">{{.game.ReleaseYear}}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">▸ DÉVELOPPEUR</span>
-                        <span class="info-value">{{.game.Developer}}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">▸ PLATEFORMES</span>
-                        <span class="info-value">{{.game.Platforms}}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">▸ NOTE</span>
-                        <span class="info-value rating">{{printf "%.1f" .game.Rating}}/10</span>
-                    </div>
-                    <a href="https://store.steampowered.com/search/?term={{.game.Title}}" target="_blank" class="steam-link">
-                        <span class="steam-icon">🎮</span> VOIR SUR STEAM
-                    </a>
-                </div>
-            </div>
-            
-            <div class="game-detail-right">
-                <h1 class="game-detail-title">{{.game.Title}}</h1>
-                
-                <div class="game-description-card">
-                    <h3 class="section-title">▸ SYNOPSIS</h3>
-                    <p class="game-description">{{.game.Description}}</p>
-                </div>
-                
-                {{if .ingameImages}}
-                <div class="ingame-carousel">
-                    <h3 class="carousel-title">▸ CAPTURES D'ÉCRAN</h3>
-                    <div class="carousel-container">
-                        <button class="carousel-btn carousel-prev" onclick="changeSlide(-1)">◀</button>
-                        <div class="carousel-images">
-                            {{range $index, $img := .ingameImages}}
-                            <img src="{{$img}}" alt="Capture {{$index}}" class="carousel-image {{if eq $index 0}}active{{end}}" data-index="{{$index}}">
-                            {{end}}
-                        </div>
-                        <button class="carousel-btn carousel-next" onclick="changeSlide(1)">▶</button>
-                    </div>
-                    <div class="carousel-dots">
-                        {{range $index, $img := .ingameImages}}
-                        <span class="carousel-dot {{if eq $index 0}}active{{end}}" onclick="goToSlide({{$index}})"></span>
-                        {{end}}
-                    </div>
-                </div>
-                {{end}}
-            </div>
+        <div class="hero-actions">
+            <a href="/games" class="button ghost">Retour catalogue</a>
+            <a href="{{.BethesdaURL}}" target="_blank" rel="noreferrer" class="button primary">Bethesda</a>
         </div>
     </div>
+</section>
 
-    <div class="navigation-buttons">
-        <a href="/games" class="nav-button">
-            ← RETOUR À LA LISTE
-        </a>
-        <a href="/" class="nav-button">
-            🏠 ACCUEIL
-        </a>
-    </div>
-    {{end}}
-</div>
-
-        </main>
-
-        <footer class="footer">
-            <div class="pip-boy-frame">
-                <p>⚠ VAULT-TEC DATABASE SYSTEM v3.0 ⚠</p>
-                <p class="footer-disclaimer">Site non officiel - Non affilié à Bethesda Softworks ou Interplay Entertainment</p>
-                <p class="footer-warning">⚡ WAR. WAR NEVER CHANGES. ⚡</p>
+<section class="detail-layout">
+    <article class="card reveal pad-card">
+        <p class="eyebrow">Infos</p>
+        <div class="fact-grid">
+            {{range .Facts}}
+            <div class="fact">
+                <span>{{.Label}}</span>
+                <strong>{{.Value}}</strong>
             </div>
-        </footer>
+            {{end}}
+        </div>
+    </article>
+
+    <article class="card reveal delay-1 pad-card">
+        <p class="eyebrow">Aperçu</p>
+        <h2>Lecture rapide du dossier.</h2>
+        <p>
+            Cette fiche rassemble les infos essentielles du jeu, son contexte, ses visuels et les liens utiles.
+            Le but est d'aller droit au sujet sans répéter les mêmes données.
+        </p>
+        <ul class="detail-list">
+            <li>Notice d'archive claire et compacte.</li>
+            <li>Visuels et captures juste après les infos.</li>
+            <li>Jeux proches pour naviguer rapidement.</li>
+        </ul>
+    </article>
+</section>
+
+{{if .Screenshots}}
+<section class="card reveal pad-card">
+    <p class="eyebrow">Captures</p>
+    <div class="shot-grid">
+        {{range .Screenshots}}<figure class="shot"><img src="{{.}}" alt="Capture du jeu"></figure>{{end}}
     </div>
-    <script src="/static/js/main.js"></script>
-</body>
-</html>
+</section>
+{{end}}
+
+{{if .RelatedGames}}
+<section class="card reveal pad-card">
+    <p class="eyebrow">Jeux proches</p>
+    <div class="related-grid">
+        {{range .RelatedGames}}
+        <a class="related-card" href="/games/{{.ID}}">
+            <img src="{{.ImageURL}}" alt="{{.Title}}">
+            <div><strong>{{.Title}}</strong><span>{{.GameType}}</span></div>
+        </a>
+        {{end}}
+    </div>
+</section>
+{{end}}
+{{end}}
 {{end}}
