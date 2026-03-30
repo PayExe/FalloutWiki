@@ -1,6 +1,9 @@
 .env
 *.exe
 fallout-vault
+fallout-wiki.exe
+fallout-db.exe
+games-db.exe
 nul
 *.log
 .DS_Store
