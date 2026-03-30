@@ -741,9 +741,9 @@ func resolveAssetURL(path string) string {
 		return path
 	}
 
-	clean := strings.TrimPrefix(path, "/static/images/")
-	clean = strings.TrimPrefix(clean, "/static/images_ingames/")
+	clean := strings.TrimPrefix(path, "/static/")
 	clean = strings.TrimPrefix(clean, "/")
+	clean = strings.ReplaceAll(clean, "images_ingames/", "images-ingames/")
 	return baseURL + "/" + clean
 }
 

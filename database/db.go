@@ -71,7 +71,7 @@ func SeedData() error {
 			Developer:   "Interplay Productions",
 			Platforms:   "PC, Mac",
 			Rating:      9.0,
-			ImageURL:    "fallout1.jpg",
+			ImageURL:    "images/fallout1.jpg",
 			Tags:        "",
 		},
 		{
@@ -82,7 +82,7 @@ func SeedData() error {
 			Developer:   "Black Isle Studios",
 			Platforms:   "PC, Mac",
 			Rating:      9.2,
-			ImageURL:    "fallout2.jpg",
+			ImageURL:    "images/fallout2.jpg",
 			Tags:        "",
 		},
 		{
@@ -93,7 +93,7 @@ func SeedData() error {
 			Developer:   "Micro Forté / 14 Degrees East",
 			Platforms:   "PC",
 			Rating:      7.5,
-			ImageURL:    "fallout_tactics.jpg",
+			ImageURL:    "images/fallout_tactics.jpg",
 			Tags:        "",
 		},
 		{
@@ -104,7 +104,7 @@ func SeedData() error {
 			Developer:   "Bethesda Game Studios",
 			Platforms:   "PC, Xbox 360, PS3",
 			Rating:      9.1,
-			ImageURL:    "fallout3.jpg",
+			ImageURL:    "images/fallout3.jpg",
 			Tags:        "",
 		},
 		{
@@ -115,7 +115,7 @@ func SeedData() error {
 			Developer:   "Obsidian Entertainment",
 			Platforms:   "PC, Xbox 360, PS3",
 			Rating:      9.5,
-			ImageURL:    "fallout_new_vegas.jpg",
+			ImageURL:    "images/fallout_new_vegas.jpg",
 			Tags:        "",
 		},
 		{
@@ -126,7 +126,7 @@ func SeedData() error {
 			Developer:   "Bethesda Game Studios",
 			Platforms:   "PC, Xbox One, PS4",
 			Rating:      8.5,
-			ImageURL:    "fallout4.jpg",
+			ImageURL:    "images/fallout4.jpg",
 			Tags:        "",
 		},
 		{
@@ -137,7 +137,7 @@ func SeedData() error {
 			Developer:   "Bethesda Game Studios",
 			Platforms:   "PC, Xbox One, PS4",
 			Rating:      6.5,
-			ImageURL:    "fallout76.jpg",
+			ImageURL:    "images/fallout76.jpg",
 			Tags:        "",
 		},
 		{
@@ -148,7 +148,7 @@ func SeedData() error {
 			Developer:   "Bethesda Game Studios",
 			Platforms:   "iOS, Android, PC, Xbox, PS4, Switch",
 			Rating:      7.8,
-			ImageURL:    "fallout_shelter.png",
+			ImageURL:    "images/fallout_shelter.png",
 			Tags:        "",
 		},
 	}
