@@ -45,8 +45,11 @@
                 <h2>{{.Title}}</h2>
                 <span class="rating">{{printf "%.1f" .Rating}}</span>
             </div>
-                <p class="muted">{{.GameType}} · {{.Developer}}</p>
-                <p>{{if gt (len .Description) 150}}{{slice .Description 0 150}}...{{else}}{{.Description}}{{end}}</p>
+            <div class="game-meta">
+                <span class="meta-pill">{{.GameType}}</span>
+                <span class="muted">{{.Developer}}</span>
+            </div>
+            <p>{{if gt (len .Description) 150}}{{slice .Description 0 150}}...{{else}}{{.Description}}{{end}}</p>
             <div class="tag-list">
                 {{range .Tags}}<span class="tag">{{.}}</span>{{end}}
             </div>

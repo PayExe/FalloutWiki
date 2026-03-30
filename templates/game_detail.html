@@ -70,7 +70,8 @@
         {{range .RelatedGames}}
         <a class="related-card" href="/games/{{.ID}}">
             <img src="{{.ImageURL}}" alt="{{.Title}}">
-            <div><strong>{{.Title}}</strong><span>{{.GameType}}</span></div>
+            <strong>{{.Title}}</strong>
+            <span>{{.GameType}}</span>
         </a>
         {{end}}
     </div>

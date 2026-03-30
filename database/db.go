@@ -26,6 +26,9 @@ func InitDB() error {
 	}
 
 	if DB.Migrator().HasTable(&models.Game{}) {
+		if err := DB.Exec("UPDATE games SET tags = ''").Error; err != nil {
+			return fmt.Errorf("erreur lors du nettoyage des tags: %v", err)
+		}
 		if err := DB.Exec("UPDATE games SET tags = '' WHERE tags IS NULL").Error; err != nil {
 			return fmt.Errorf("erreur lors du nettoyage des tags: %v", err)
 		}

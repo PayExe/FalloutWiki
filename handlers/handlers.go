@@ -489,20 +489,15 @@ func loadGames() ([]CatalogGame, error) {
 
 func buildTags(game models.Game) []string {
 	base := splitTags(game.Tags)
-
-	gameType := normalizeFilter(game.GameType)
 	seen := map[string]bool{}
 	result := make([]string, 0, len(base))
 	for _, tag := range base {
 		tag = normalizeFilter(tag)
-		if tag == "" || tag == gameType || seen[tag] {
+		if tag == "" || seen[tag] {
 			continue
 		}
 		seen[tag] = true
 		result = append(result, tag)
-		if len(result) == 3 {
-			break
-		}
 	}
 
 	return result
@@ -524,27 +519,6 @@ func splitTags(raw string) []string {
 		}
 	}
 	return cleaned
-}
-
-func derivedTags(game models.Game) []string {
-	byTitle := map[string][]string{
-		"fallout":            {"classic", "isometric", "vault", "wasteland"},
-		"fallout 2":          {"classic", "isometric", "black isle", "wasteland"},
-		"fallout tactics":    {"tactical", "squad", "brotherhood", "strategy"},
-		"fallout 3":          {"bethesda", "vats", "capital wasteland"},
-		"fallout: new vegas": {"obsidian", "mojave", "dialogue", "factions"},
-		"fallout 4":          {"bethesda", "settlements", "crafting", "commonwealth"},
-		"fallout 76":         {"bethesda", "multiplayer", "online", "appalachia"},
-		"fallout shelter":    {"management", "vault", "mobile", "strategy"},
-	}
-
-	title := strings.ToLower(game.Title)
-	tags := []string{strings.ToLower(game.GameType)}
-	if extra, ok := byTitle[title]; ok {
-		tags = append(tags, extra...)
-	}
-
-	return tags
 }
 
 func computeStats(games []CatalogGame) PageStats {

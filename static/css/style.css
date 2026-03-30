@@ -332,10 +332,24 @@ p { margin: 0 0 1rem; }
 
 .featured-item strong {
   display: block;
-  margin-bottom: 0.18rem;
+  margin: 0;
 }
 
 .featured-item span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.related-card strong,
+.related-card span {
+  display: block;
+}
+
+.related-card strong {
+  margin: 0;
+}
+
+.related-card span {
   color: var(--muted);
   font-size: 0.9rem;
 }
@@ -442,12 +456,36 @@ p { margin: 0 0 1rem; }
 .game-topline h2 { margin: 0; font-size: 1.15rem; }
 .rating { color: #f1d1b3; font-weight: 700; }
 .muted { color: var(--muted); }
+.game-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+}
+.meta-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.32rem 0.62rem;
+  border-radius: 999px;
+  background: rgba(195, 109, 61, 0.12);
+  border: 1px solid rgba(195, 109, 61, 0.22);
+  color: #f1d1b3;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
 .tag-list {
   gap: 0.55rem;
   row-gap: 0.6rem;
   margin-top: 0.25rem;
 }
 .tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
   padding: 0.42rem 0.7rem;
   border-radius: 999px;
   background: rgba(147,168,106,0.12);

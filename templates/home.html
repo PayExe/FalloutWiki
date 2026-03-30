@@ -57,10 +57,8 @@
         {{range .FeaturedGames}}
         <a href="/games/{{.ID}}" class="featured-item">
             <img src="{{.ImageURL}}" alt="{{.Title}}">
-            <div>
-                <strong>{{.Title}}</strong>
-                <span>{{.ReleaseYear}} · {{.GameType}}</span>
-            </div>
+            <strong>{{.Title}}</strong>
+            <span>{{.ReleaseYear}} · {{.GameType}}</span>
         </a>
         {{end}}
     </div>
