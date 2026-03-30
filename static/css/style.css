@@ -340,33 +340,6 @@ p { margin: 0 0 1rem; }
   font-size: 0.9rem;
 }
 
-.api-panel { display: grid; gap: 1rem; }
-.api-status {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.35rem 0.7rem;
-  border-radius: 999px;
-  background: rgba(147,168,106,0.12);
-  border: 1px solid rgba(147,168,106,0.22);
-  color: #cfd8bf;
-  font-size: 0.78rem;
-}
-.api-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.9rem;
-}
-.api-card {
-  display: grid;
-  gap: 0.35rem;
-  padding: 0.9rem 1rem;
-  border-radius: 12px;
-  border: 1px solid rgba(231, 237, 244, 0.08);
-  background: rgba(255,255,255,0.03);
-}
-.api-card strong { color: #f1d1b3; }
-.api-card span { color: var(--muted); }
-
 .related-card strong,
 .related-card span {
   display: block;
@@ -623,6 +596,12 @@ p { margin: 0 0 1rem; }
 .game-form {
   display: grid;
   gap: 0.9rem;
+}
+
+.form-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 
 .game-form textarea.input {

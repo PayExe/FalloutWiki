@@ -12,7 +12,6 @@ import (
 
 var DB *gorm.DB
 
-// InitDB initialise la connexion à la base de données PostgreSQL avec GORM
 func InitDB() error {
 	databaseURL := os.Getenv("DATABASE_URL")
 	if databaseURL == "" {
@@ -26,15 +25,11 @@ func InitDB() error {
 	}
 
 	if DB.Migrator().HasTable(&models.Game{}) {
-		if err := DB.Exec("UPDATE games SET tags = ''").Error; err != nil {
-			return fmt.Errorf("erreur lors du nettoyage des tags: %v", err)
-		}
 		if err := DB.Exec("UPDATE games SET tags = '' WHERE tags IS NULL").Error; err != nil {
 			return fmt.Errorf("erreur lors du nettoyage des tags: %v", err)
 		}
 	}
 
-	// Migration automatique du modèle Game
 	err = DB.AutoMigrate(&models.Game{})
 	if err != nil {
 		return fmt.Errorf("erreur lors de la migration: %v", err)
@@ -44,15 +39,12 @@ func InitDB() error {
 	return nil
 }
 
-// CreateTables n'est plus nécessaire avec GORM (migration automatique)
 func CreateTables() error {
 	log.Println("✓ Migration automatique avec GORM, pas besoin de requête SQL")
 	return nil
 }
 
-// SeedData insère les données de test si la table est vide
 func SeedData() error {
-	// Vérifie si des données existent déjà
 	var count int64
 	err := DB.Model(&models.Game{}).Count(&count).Error
 	if err != nil {
@@ -64,7 +56,6 @@ func SeedData() error {
 		return nil
 	}
 
-	// Données de test pour les jeux Fallout
 	games := []models.Game{
 		{
 			Title:       "Fallout",
@@ -156,7 +147,6 @@ func SeedData() error {
 		},
 	}
 
-	// Insertion des données avec GORM
 	err = DB.Create(&games).Error
 	if err != nil {
 		return fmt.Errorf("erreur lors de l'insertion des jeux: %v", err)
@@ -166,7 +156,6 @@ func SeedData() error {
 	return nil
 }
 
-// CloseDB ferme la connexion à la base de données
 func CloseDB() {
 	if DB != nil {
 		sqlDB, err := DB.DB()

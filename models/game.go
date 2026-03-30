@@ -2,7 +2,6 @@ package models
 
 import "time"
 
-// Game représente un jeu Fallout dans la base de données
 type Game struct {
 	ID          int       `gorm:"primaryKey;autoIncrement" json:"id"`
 	Title       string    `gorm:"size:255;not null" json:"title"`

@@ -16,7 +16,6 @@ import (
 )
 
 const bethesdaURL = "https://bethesda.net/"
-const apiBaseURL = "https://api.github.com/repos"
 
 type PageStats struct {
 	TotalGames    int
@@ -29,9 +28,8 @@ type PageStats struct {
 
 type CatalogGame struct {
 	models.Game
-	Tags          []string
-	TagLine       string
-	ScreenshotURL string
+	Tags    []string
+	TagLine string
 }
 
 type HomePageData struct {
@@ -41,15 +39,7 @@ type HomePageData struct {
 	Error         string
 	Stats         PageStats
 	FeaturedGames []CatalogGame
-	ApiStatus     string
-	ApiItems      []ApiRepoItem
 	BethesdaURL   string
-}
-
-type ApiRepoItem struct {
-	Name        string
-	Description string
-	HTMLURL     string
 }
 
 type CatalogPageData struct {
@@ -133,7 +123,6 @@ func HomeHandler(c *gin.Context) {
 
 	stats := computeStats(games)
 	featured := bestGames(games, 3)
-	apiItems, apiStatus := loadExternalApiItems()
 
 	c.HTML(http.StatusOK, "home.html", HomePageData{
 		ActivePage:    "home",
@@ -141,29 +130,8 @@ func HomeHandler(c *gin.Context) {
 		PageTitle:     "Fallout Vault - Accueil",
 		Stats:         stats,
 		FeaturedGames: featured,
-		ApiItems:      apiItems,
-		ApiStatus:     apiStatus,
 		BethesdaURL:   bethesdaURL,
 	})
-}
-
-func loadExternalApiItems() ([]ApiRepoItem, string) {
-	client := &http.Client{Timeout: 4 * time.Second}
-	resp, err := client.Get(apiBaseURL + "/gin-gonic/gin/contents/README.md")
-	if err != nil {
-		return nil, "API externe indisponible"
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Sprintf("API externe en erreur (%d)", resp.StatusCode)
-	}
-
-	return []ApiRepoItem{{
-		Name:        "Gin",
-		Description: "Framework Go utilisé pour servir le site.",
-		HTMLURL:     "https://github.com/gin-gonic/gin",
-	}}, "API externe chargée"
 }
 
 func GamesListHandler(c *gin.Context) {
@@ -523,11 +491,11 @@ func buildTags(game models.Game) []string {
 	seen := map[string]bool{}
 	result := make([]string, 0, len(base))
 	for _, tag := range base {
-		tag = normalizeFilter(tag)
-		if tag == "" || seen[tag] {
+		key := normalizeFilter(tag)
+		if key == "" || seen[key] {
 			continue
 		}
-		seen[tag] = true
+		seen[key] = true
 		result = append(result, tag)
 	}
 
@@ -544,7 +512,7 @@ func splitTags(raw string) []string {
 	})
 	cleaned := make([]string, 0, len(parts))
 	for _, part := range parts {
-		part = normalizeFilter(part)
+		part = strings.TrimSpace(part)
 		if part != "" {
 			cleaned = append(cleaned, part)
 		}

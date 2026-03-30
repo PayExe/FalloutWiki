@@ -22,8 +22,9 @@
             <label><span>Plateformes</span><input class="input" name="platforms" value="{{.Game.Platforms}}" required></label>
             <label><span>Note</span><input class="input" name="rating" type="number" step="0.1" value="{{.Game.Rating}}" required></label>
             <label class="span-2"><span>Image URL</span><input class="input" name="image_url" value="{{.Game.ImageURL}}" required></label>
-            <label class="span-2"><span>Tags</span><input class="input" name="tags" value="{{.Game.Tags}}"></label>
+            <label class="span-2"><span>Tags</span><input class="input" name="tags" value="{{.Game.Tags}}" placeholder="ex: classic, vault, wasteland"></label>
         </div>
+        <p class="form-note">Les tags saisis ici sont enregistrés tels quels dans la base, séparés par virgules.</p>
         <div class="hero-actions">
             <button class="button primary" type="submit">Enregistrer</button>
             <a class="button ghost" href="/admin/games">Retour</a>
