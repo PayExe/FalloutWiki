@@ -340,6 +340,33 @@ p { margin: 0 0 1rem; }
   font-size: 0.9rem;
 }
 
+.api-panel { display: grid; gap: 1rem; }
+.api-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(147,168,106,0.12);
+  border: 1px solid rgba(147,168,106,0.22);
+  color: #cfd8bf;
+  font-size: 0.78rem;
+}
+.api-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+.api-card {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(231, 237, 244, 0.08);
+  background: rgba(255,255,255,0.03);
+}
+.api-card strong { color: #f1d1b3; }
+.api-card span { color: var(--muted); }
+
 .related-card strong,
 .related-card span {
   display: block;
@@ -522,9 +549,76 @@ p { margin: 0 0 1rem; }
   overflow: hidden;
   border: 1px solid rgba(231, 237, 244, 0.08);
 }
+.shot { cursor: zoom-in; position: relative; }
+.shot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.04), transparent 55%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.shot:hover::after { opacity: 1; }
+.shot img { transition: transform 0.28s ease; }
+.shot:hover img { transform: scale(1.04); }
 .related-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.35rem; }
 .related-card { display:grid; gap: 0.6rem; padding: 0.75rem; background: rgba(255,255,255,0.03); }
 .empty-state { padding: 1.9rem; text-align: center; }
+
+.image-lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 7, 11, 0.88);
+  display: grid;
+  place-items: center;
+  padding: 1.2rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 100;
+}
+
+.image-lightbox.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.image-lightbox img {
+  max-width: min(1100px, 96vw);
+  max-height: 88vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 16px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+  transform: scale(0.96);
+  transition: transform 0.2s ease;
+}
+
+.image-lightbox img,
+.image-lightbox.open img {
+  display: block;
+}
+
+.image-lightbox.open img {
+  transform: scale(1);
+}
+
+.image-lightbox-close {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(231, 237, 244, 0.18);
+  background: rgba(255,255,255,0.08);
+  color: var(--text);
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+}
 
 .game-form {
   display: grid;

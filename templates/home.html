@@ -72,4 +72,26 @@
     </div>
     <a href="/games" class="button primary">Explorer les jeux</a>
 </section>
+
+<section class="card reveal delay-2 pad-card api-panel">
+    <div class="featured-head">
+        <div>
+            <p class="eyebrow">API externe</p>
+            <h2>Démonstration d'une API publique.</h2>
+        </div>
+        <span class="api-status">{{.ApiStatus}}</span>
+    </div>
+    {{if .ApiItems}}
+    <div class="api-grid">
+        {{range .ApiItems}}
+        <a class="api-card" href="{{.HTMLURL}}" target="_blank" rel="noreferrer">
+            <strong>{{.Name}}</strong>
+            <span>{{.Description}}</span>
+        </a>
+        {{end}}
+    </div>
+    {{else}}
+    <p>Impossible de charger les données de l'API externe pour le moment.</p>
+    {{end}}
+</section>
 {{end}}

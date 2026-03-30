@@ -16,6 +16,7 @@ import (
 )
 
 const bethesdaURL = "https://bethesda.net/"
+const apiBaseURL = "https://api.github.com/repos"
 
 type PageStats struct {
 	TotalGames    int
@@ -40,7 +41,15 @@ type HomePageData struct {
 	Error         string
 	Stats         PageStats
 	FeaturedGames []CatalogGame
+	ApiStatus     string
+	ApiItems      []ApiRepoItem
 	BethesdaURL   string
+}
+
+type ApiRepoItem struct {
+	Name        string
+	Description string
+	HTMLURL     string
 }
 
 type CatalogPageData struct {
@@ -124,6 +133,7 @@ func HomeHandler(c *gin.Context) {
 
 	stats := computeStats(games)
 	featured := bestGames(games, 3)
+	apiItems, apiStatus := loadExternalApiItems()
 
 	c.HTML(http.StatusOK, "home.html", HomePageData{
 		ActivePage:    "home",
@@ -131,8 +141,29 @@ func HomeHandler(c *gin.Context) {
 		PageTitle:     "Fallout Vault - Accueil",
 		Stats:         stats,
 		FeaturedGames: featured,
+		ApiItems:      apiItems,
+		ApiStatus:     apiStatus,
 		BethesdaURL:   bethesdaURL,
 	})
+}
+
+func loadExternalApiItems() ([]ApiRepoItem, string) {
+	client := &http.Client{Timeout: 4 * time.Second}
+	resp, err := client.Get(apiBaseURL + "/gin-gonic/gin/contents/README.md")
+	if err != nil {
+		return nil, "API externe indisponible"
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Sprintf("API externe en erreur (%d)", resp.StatusCode)
+	}
+
+	return []ApiRepoItem{{
+		Name:        "Gin",
+		Description: "Framework Go utilisé pour servir le site.",
+		HTMLURL:     "https://github.com/gin-gonic/gin",
+	}}, "API externe chargée"
 }
 
 func GamesListHandler(c *gin.Context) {
