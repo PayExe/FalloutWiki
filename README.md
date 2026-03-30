@@ -47,11 +47,17 @@ The project is designed for learning and experimentation. It can be deployed loc
 ## Environment Variables
 - `DATABASE_URL`: required, PostgreSQL connection string
 - `PORT`: optional, defaults to `8080`
+- `IMAGE_ASSET_BASE_URL`: optional, base URL for external image storage like Supabase Storage
 
 ## Database Notes
 - The project uses one main table: `games`.
 - The seed data fills the table only if it is empty.
 - This keeps the project easy to test locally.
+
+## External Storage
+- Images can be served from Supabase Storage.
+- Set `IMAGE_ASSET_BASE_URL` to the public bucket base URL.
+- The app will use that base URL instead of local `/static/images/...` paths.
 
 ## Disclaimer
 This project is not official and is for educational purposes only. All Fallout content belongs to their respective owners.

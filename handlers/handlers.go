@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"math/rand"
 	"net/http"
+	"os"
 	"sort"
 	"strconv"
 	"strings"
@@ -421,6 +422,15 @@ func AdminGameDeleteHandler(c *gin.Context) {
 	c.Redirect(http.StatusSeeOther, "/admin/games")
 }
 
+func AdminGameClearTagsHandler(c *gin.Context) {
+	if err := database.DB.Model(&models.Game{}).Where("1 = 1").Update("tags", "").Error; err != nil {
+		c.String(http.StatusInternalServerError, "Impossible de vider les tags")
+		return
+	}
+
+	c.Redirect(http.StatusSeeOther, "/admin/games")
+}
+
 func gameFromForm(c *gin.Context) (models.Game, error) {
 	releaseYear, err := strconv.Atoi(strings.TrimSpace(c.PostForm("release_year")))
 	if err != nil {
@@ -467,6 +477,7 @@ func loadGames() ([]CatalogGame, error) {
 
 	games := make([]CatalogGame, 0, len(rawGames))
 	for _, game := range rawGames {
+		game.ImageURL = resolveAssetURL(game.ImageURL)
 		g := CatalogGame{Game: game}
 		g.Tags = buildTags(game)
 		g.TagLine = strings.Join(g.Tags, " • ")
@@ -478,9 +489,6 @@ func loadGames() ([]CatalogGame, error) {
 
 func buildTags(game models.Game) []string {
 	base := splitTags(game.Tags)
-	if len(base) == 0 {
-		base = derivedTags(game)
-	}
 
 	gameType := normalizeFilter(game.GameType)
 	seen := map[string]bool{}
@@ -523,7 +531,7 @@ func derivedTags(game models.Game) []string {
 		"fallout":            {"classic", "isometric", "vault", "wasteland"},
 		"fallout 2":          {"classic", "isometric", "black isle", "wasteland"},
 		"fallout tactics":    {"tactical", "squad", "brotherhood", "strategy"},
-		"fallout 3":          {"bethesda", "vats", "capital wasteland", "action rpg"},
+		"fallout 3":          {"bethesda", "vats", "capital wasteland"},
 		"fallout: new vegas": {"obsidian", "mojave", "dialogue", "factions"},
 		"fallout 4":          {"bethesda", "settlements", "crafting", "commonwealth"},
 		"fallout 76":         {"bethesda", "multiplayer", "online", "appalachia"},
@@ -717,10 +725,26 @@ func getIngameImages(gameID int) []string {
 	}
 
 	return []string{
-		"/static/images_ingames/" + base + "_ingame1.jpg",
-		"/static/images_ingames/" + base + "_ingame2.jpg",
-		"/static/images_ingames/" + base + "_ingame3.jpg",
+		resolveAssetURL("/static/images_ingames/" + base + "_ingame1.jpg"),
+		resolveAssetURL("/static/images_ingames/" + base + "_ingame2.jpg"),
+		resolveAssetURL("/static/images_ingames/" + base + "_ingame3.jpg"),
 	}
+}
+
+func resolveAssetURL(path string) string {
+	if strings.HasPrefix(path, "http://") || strings.HasPrefix(path, "https://") {
+		return path
+	}
+
+	baseURL := strings.TrimRight(strings.TrimSpace(os.Getenv("IMAGE_ASSET_BASE_URL")), "/")
+	if baseURL == "" {
+		return path
+	}
+
+	clean := strings.TrimPrefix(path, "/static/images/")
+	clean = strings.TrimPrefix(clean, "/static/images_ingames/")
+	clean = strings.TrimPrefix(clean, "/")
+	return baseURL + "/" + clean
 }
 
 func normalizeFilter(value string) string {

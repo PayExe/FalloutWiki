@@ -25,6 +25,12 @@ func InitDB() error {
 		return fmt.Errorf("erreur lors de l'ouverture de la connexion GORM: %v", err)
 	}
 
+	if DB.Migrator().HasTable(&models.Game{}) {
+		if err := DB.Exec("UPDATE games SET tags = '' WHERE tags IS NULL").Error; err != nil {
+			return fmt.Errorf("erreur lors du nettoyage des tags: %v", err)
+		}
+	}
+
 	// Migration automatique du modèle Game
 	err = DB.AutoMigrate(&models.Game{})
 	if err != nil {
@@ -65,8 +71,8 @@ func SeedData() error {
 			Developer:   "Interplay Productions",
 			Platforms:   "PC, Mac",
 			Rating:      9.0,
-			ImageURL:    "/static/images/fallout1.jpg",
-			Tags:        "classic, isometric, rpg, vault, wasteland",
+			ImageURL:    "fallout1.jpg",
+			Tags:        "",
 		},
 		{
 			Title:       "Fallout 2",
@@ -76,8 +82,8 @@ func SeedData() error {
 			Developer:   "Black Isle Studios",
 			Platforms:   "PC, Mac",
 			Rating:      9.2,
-			ImageURL:    "/static/images/fallout2.jpg",
-			Tags:        "classic, isometric, rpg, black isle, wasteland",
+			ImageURL:    "fallout2.jpg",
+			Tags:        "",
 		},
 		{
 			Title:       "Fallout Tactics",
@@ -87,8 +93,8 @@ func SeedData() error {
 			Developer:   "Micro Forté / 14 Degrees East",
 			Platforms:   "PC",
 			Rating:      7.5,
-			ImageURL:    "/static/images/fallout_tactics.jpg",
-			Tags:        "tactical, squad, brotherhood, classic, strategy",
+			ImageURL:    "fallout_tactics.jpg",
+			Tags:        "",
 		},
 		{
 			Title:       "Fallout 3",
@@ -98,8 +104,8 @@ func SeedData() error {
 			Developer:   "Bethesda Game Studios",
 			Platforms:   "PC, Xbox 360, PS3",
 			Rating:      9.1,
-			ImageURL:    "/static/images/fallout3.jpg",
-			Tags:        "bethesda, vats, wasteland, action rpg, capital wasteland",
+			ImageURL:    "fallout3.jpg",
+			Tags:        "",
 		},
 		{
 			Title:       "Fallout: New Vegas",
@@ -109,8 +115,8 @@ func SeedData() error {
 			Developer:   "Obsidian Entertainment",
 			Platforms:   "PC, Xbox 360, PS3",
 			Rating:      9.5,
-			ImageURL:    "/static/images/fallout_new_vegas.jpg",
-			Tags:        "obsidian, mojave, factions, dialogue, action rpg",
+			ImageURL:    "fallout_new_vegas.jpg",
+			Tags:        "",
 		},
 		{
 			Title:       "Fallout 4",
@@ -120,8 +126,8 @@ func SeedData() error {
 			Developer:   "Bethesda Game Studios",
 			Platforms:   "PC, Xbox One, PS4",
 			Rating:      8.5,
-			ImageURL:    "/static/images/fallout4.jpg",
-			Tags:        "bethesda, settlements, crafting, action rpg, commonwealth",
+			ImageURL:    "fallout4.jpg",
+			Tags:        "",
 		},
 		{
 			Title:       "Fallout 76",
@@ -131,8 +137,8 @@ func SeedData() error {
 			Developer:   "Bethesda Game Studios",
 			Platforms:   "PC, Xbox One, PS4",
 			Rating:      6.5,
-			ImageURL:    "/static/images/fallout76.jpg",
-			Tags:        "bethesda, multiplayer, online, appalachia, survival",
+			ImageURL:    "fallout76.jpg",
+			Tags:        "",
 		},
 		{
 			Title:       "Fallout Shelter",
@@ -142,8 +148,8 @@ func SeedData() error {
 			Developer:   "Bethesda Game Studios",
 			Platforms:   "iOS, Android, PC, Xbox, PS4, Switch",
 			Rating:      7.8,
-			ImageURL:    "/static/images/fallout_shelter.png",
-			Tags:        "management, vault, mobile, strategy, bethesda",
+			ImageURL:    "fallout_shelter.png",
+			Tags:        "",
 		},
 	}
 

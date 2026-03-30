@@ -51,6 +51,7 @@ func main() {
 	router.GET("/admin/games/:id/edit", handlers.AdminGameEditHandler)
 	router.POST("/admin/games/:id/update", handlers.AdminGameUpdateHandler)
 	router.POST("/admin/games/:id/delete", handlers.AdminGameDeleteHandler)
+	router.POST("/admin/games/clear-tags", handlers.AdminGameClearTagsHandler)
 	router.GET("/credits", handlers.CreditsHandler)
 
 	// Récupération du port depuis les variables d'environnement (Scalingo)

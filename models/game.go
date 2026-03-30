@@ -13,6 +13,7 @@ type Game struct {
 	Platforms   string    `gorm:"size:255" json:"platforms"`
 	Rating      float64   `gorm:"type:decimal(3,1)" json:"rating"`
 	ImageURL    string    `gorm:"size:500" json:"image_url"`
-	Tags        string    `gorm:"type:text" json:"tags"`
+	Tags        string    `gorm:"type:text;not null;default:''" json:"tags"`
 	CreatedAt   time.Time `gorm:"autoCreateTime" json:"created_at"`
+	UpdatedAt   time.Time `gorm:"autoUpdateTime" json:"updated_at"`
 }
