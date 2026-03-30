@@ -1,0 +1,19 @@
+{{define "admin_login.html"}}{{template "base.html" .}}{{end}}
+
+{{define "admin_login_content"}}
+<section class="card reveal pad-card admin-login">
+    <div>
+        <p class="eyebrow">Accès admin</p>
+        <h1>Entrer le code.</h1>
+        <p>Protège l'administration avec un simple code défini dans `ADMIN_CODE`.</p>
+        {{if .Error}}<p class="error-text">{{.Error}}</p>{{end}}
+        <form method="post" action="/admin" class="game-form">
+            <input class="input" type="password" name="code" placeholder="Code admin" required>
+            <div class="hero-actions">
+                <button class="button primary" type="submit">Déverrouiller</button>
+                <a class="button ghost" href="/">Retour</a>
+            </div>
+        </form>
+    </div>
+</section>
+{{end}}

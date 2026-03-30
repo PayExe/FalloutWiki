@@ -20,10 +20,6 @@ func main() {
 	}
 	defer database.CloseDB()
 
-	if err := database.CreateTables(); err != nil {
-		log.Fatalf("Erreur lors de la création des tables: %v", err)
-	}
-
 	if err := database.SeedData(); err != nil {
 		log.Fatalf("Erreur lors de l'insertion des données: %v", err)
 	}
@@ -37,13 +33,18 @@ func main() {
 	router.GET("/", handlers.HomeHandler)
 	router.GET("/games", handlers.GamesListHandler)
 	router.GET("/games/:id", handlers.GameDetailHandler)
-	router.GET("/admin/games", handlers.AdminGamesHandler)
-	router.GET("/admin/games/new", handlers.AdminGameNewHandler)
-	router.POST("/admin/games", handlers.AdminGameCreateHandler)
-	router.GET("/admin/games/:id/edit", handlers.AdminGameEditHandler)
-	router.POST("/admin/games/:id/update", handlers.AdminGameUpdateHandler)
-	router.POST("/admin/games/:id/delete", handlers.AdminGameDeleteHandler)
-	router.POST("/admin/games/clear-tags", handlers.AdminGameClearTagsHandler)
+	router.GET("/admin", handlers.AdminLoginHandler)
+	router.POST("/admin", handlers.AdminLoginSubmitHandler)
+	router.GET("/admin/logout", handlers.AdminLogoutHandler)
+	admin := router.Group("/admin")
+	admin.Use(handlers.AdminAuthMiddleware())
+	admin.GET("/games", handlers.AdminGamesHandler)
+	admin.GET("/games/new", handlers.AdminGameNewHandler)
+	admin.POST("/games", handlers.AdminGameCreateHandler)
+	admin.GET("/games/:id/edit", handlers.AdminGameEditHandler)
+	admin.POST("/games/:id/update", handlers.AdminGameUpdateHandler)
+	admin.POST("/games/:id/delete", handlers.AdminGameDeleteHandler)
+	admin.POST("/games/clear-tags", handlers.AdminGameClearTagsHandler)
 	router.GET("/credits", handlers.CreditsHandler)
 
 	port := os.Getenv("PORT")

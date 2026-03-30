@@ -39,11 +39,6 @@ func InitDB() error {
 	return nil
 }
 
-func CreateTables() error {
-	log.Println("✓ Migration automatique avec GORM, pas besoin de requête SQL")
-	return nil
-}
-
 func SeedData() error {
 	var count int64
 	err := DB.Model(&models.Game{}).Count(&count).Error
@@ -65,7 +60,7 @@ func SeedData() error {
 			Developer:   "Interplay Productions",
 			Platforms:   "PC, Mac",
 			Rating:      9.0,
-			ImageURL:    "images/fallout1.jpg",
+			ImageURL:    "/static/images/fallout1.jpg",
 			Tags:        "",
 		},
 		{
@@ -76,7 +71,7 @@ func SeedData() error {
 			Developer:   "Black Isle Studios",
 			Platforms:   "PC, Mac",
 			Rating:      9.2,
-			ImageURL:    "images/fallout2.jpg",
+			ImageURL:    "/static/images/fallout2.jpg",
 			Tags:        "",
 		},
 		{
@@ -87,7 +82,7 @@ func SeedData() error {
 			Developer:   "Micro Forté / 14 Degrees East",
 			Platforms:   "PC",
 			Rating:      7.5,
-			ImageURL:    "images/fallout_tactics.jpg",
+			ImageURL:    "/static/images/fallout_tactics.jpg",
 			Tags:        "",
 		},
 		{
@@ -98,7 +93,7 @@ func SeedData() error {
 			Developer:   "Bethesda Game Studios",
 			Platforms:   "PC, Xbox 360, PS3",
 			Rating:      9.1,
-			ImageURL:    "images/fallout3.jpg",
+			ImageURL:    "/static/images/fallout3.jpg",
 			Tags:        "",
 		},
 		{
@@ -109,7 +104,7 @@ func SeedData() error {
 			Developer:   "Obsidian Entertainment",
 			Platforms:   "PC, Xbox 360, PS3",
 			Rating:      9.5,
-			ImageURL:    "images/fallout_new_vegas.jpg",
+			ImageURL:    "/static/images/fallout_new_vegas.jpg",
 			Tags:        "",
 		},
 		{
@@ -120,7 +115,7 @@ func SeedData() error {
 			Developer:   "Bethesda Game Studios",
 			Platforms:   "PC, Xbox One, PS4",
 			Rating:      8.5,
-			ImageURL:    "images/fallout4.jpg",
+			ImageURL:    "/static/images/fallout4.jpg",
 			Tags:        "",
 		},
 		{
@@ -131,7 +126,7 @@ func SeedData() error {
 			Developer:   "Bethesda Game Studios",
 			Platforms:   "PC, Xbox One, PS4",
 			Rating:      6.5,
-			ImageURL:    "images/fallout76.jpg",
+			ImageURL:    "/static/images/fallout76.jpg",
 			Tags:        "",
 		},
 		{
@@ -142,7 +137,7 @@ func SeedData() error {
 			Developer:   "Bethesda Game Studios",
 			Platforms:   "iOS, Android, PC, Xbox, PS4, Switch",
 			Rating:      7.8,
-			ImageURL:    "images/fallout_shelter.png",
+			ImageURL:    "/static/images/fallout_shelter.png",
 			Tags:        "",
 		},
 	}

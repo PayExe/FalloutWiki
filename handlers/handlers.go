@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
@@ -16,6 +17,7 @@ import (
 )
 
 const bethesdaURL = "https://bethesda.net/"
+const adminCookieName = "admin_auth"
 
 type PageStats struct {
 	TotalGames    int
@@ -107,6 +109,56 @@ type GameFormPageData struct {
 	ActionURL   string
 	IsEdit      bool
 	BethesdaURL string
+}
+
+func AdminAuthMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		code := strings.TrimSpace(os.Getenv("ADMIN_CODE"))
+		if code == "" {
+			c.AbortWithStatus(http.StatusForbidden)
+			return
+		}
+
+		if cookie, err := c.Cookie(adminCookieName); err != nil || cookie != code {
+			c.Redirect(http.StatusSeeOther, "/admin")
+			c.Abort()
+			return
+		}
+
+		c.Next()
+	}
+}
+
+func AdminLoginHandler(c *gin.Context) {
+	c.HTML(http.StatusOK, "admin_login.html", gin.H{
+		"PageTitle":   "Fallout Vault - Accès admin",
+		"ContentPage": "admin_login_content",
+	})
+}
+
+func AdminLoginSubmitHandler(c *gin.Context) {
+	code := strings.TrimSpace(os.Getenv("ADMIN_CODE"))
+	if code == "" {
+		c.String(http.StatusInternalServerError, "ADMIN_CODE manquant")
+		return
+	}
+
+	if strings.TrimSpace(c.PostForm("code")) != code {
+		c.HTML(http.StatusUnauthorized, "admin_login.html", gin.H{
+			"PageTitle":   "Fallout Vault - Accès admin",
+			"ContentPage": "admin_login_content",
+			"Error":       "Code incorrect",
+		})
+		return
+	}
+
+	c.SetCookie(adminCookieName, code, 60*60*8, "/", "", false, true)
+	c.Redirect(http.StatusSeeOther, "/admin/games")
+}
+
+func AdminLogoutHandler(c *gin.Context) {
+	c.SetCookie(adminCookieName, "", -1, "/", "", false, true)
+	c.Redirect(http.StatusSeeOther, "/admin")
 }
 
 func HomeHandler(c *gin.Context) {
@@ -224,7 +276,7 @@ func GameDetailHandler(c *gin.Context) {
 		Game:         current,
 		Tags:         current.Tags,
 		Facts:        facts,
-		Screenshots:  getIngameImages(current.ID),
+		Screenshots:  getIngameImages(current.ID, current.ImageURL),
 		RelatedGames: relatedGames(games, current),
 		BethesdaURL:  bethesdaURL,
 	})
@@ -681,7 +733,7 @@ func relatedGames(games []CatalogGame, current CatalogGame) []CatalogGame {
 	return result
 }
 
-func getIngameImages(gameID int) []string {
+func getIngameImages(gameID int, fallback string) []string {
 	gameFiles := map[int]string{
 		1: "fallout1",
 		2: "fallout2",
@@ -692,16 +744,47 @@ func getIngameImages(gameID int) []string {
 		7: "fallout_shelter",
 	}
 
+	shots := make([]string, 0, 3)
 	base, exists := gameFiles[gameID]
 	if !exists {
+		if fallback != "" {
+			return []string{fallback}
+		}
 		return []string{}
 	}
 
-	return []string{
-		resolveAssetURL("/static/images_ingames/" + base + "_ingame1.jpg"),
-		resolveAssetURL("/static/images_ingames/" + base + "_ingame2.jpg"),
-		resolveAssetURL("/static/images_ingames/" + base + "_ingame3.jpg"),
+	for i := 1; i <= 3; i++ {
+		asset := resolveAssetURL("/static/images-ingames/" + base + fmt.Sprintf("_ingame%d.jpg", i))
+		if asset == "" {
+			continue
+		}
+
+		if strings.HasPrefix(asset, "/static/") && !assetExists(asset) {
+			continue
+		}
+
+		shots = append(shots, asset)
 	}
+
+	if len(shots) == 0 && fallback != "" {
+		return []string{fallback}
+	}
+
+	return shots
+}
+
+func assetExists(assetPath string) bool {
+	if assetPath == "" {
+		return false
+	}
+
+	clean := strings.TrimPrefix(assetPath, "/")
+	return fileExists(filepath.FromSlash(clean))
+}
+
+func fileExists(path string) bool {
+	_, err := os.Stat(path)
+	return err == nil
 }
 
 func resolveAssetURL(path string) string {
@@ -711,12 +794,14 @@ func resolveAssetURL(path string) string {
 
 	baseURL := strings.TrimRight(strings.TrimSpace(os.Getenv("IMAGE_ASSET_BASE_URL")), "/")
 	if baseURL == "" {
-		return path
+		if strings.HasPrefix(path, "/static/") {
+			return path
+		}
+		return "/static/" + strings.TrimPrefix(path, "/")
 	}
 
 	clean := strings.TrimPrefix(path, "/static/")
 	clean = strings.TrimPrefix(clean, "/")
-	clean = strings.ReplaceAll(clean, "images_ingames/", "images-ingames/")
 	return baseURL + "/" + clean
 }
 

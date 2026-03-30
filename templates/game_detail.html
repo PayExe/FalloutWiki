@@ -58,7 +58,7 @@
 <section class="card reveal pad-card">
     <p class="eyebrow">Captures</p>
     <div class="shot-grid">
-        {{range .Screenshots}}<figure class="shot" data-lightbox-shot><img src="{{.}}" alt="Capture du jeu"></figure>{{end}}
+        {{range .Screenshots}}<figure class="shot" data-lightbox-shot><img src="{{.}}" alt="Capture du jeu" loading="lazy"></figure>{{end}}
     </div>
 </section>
 {{end}}

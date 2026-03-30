@@ -17,7 +17,7 @@
             <nav class="nav">
                 <a href="/" class="nav-link {{if eq .ActivePage "home"}}active{{end}}">Accueil</a>
                 <a href="/games" class="nav-link {{if eq .ActivePage "catalog"}}active{{end}}">Catalogue</a>
-                <a href="/admin/games" class="nav-link {{if eq .ActivePage "admin"}}active{{end}}">Admin</a>
+                <a href="/admin" class="nav-link {{if eq .ActivePage "admin"}}active{{end}}">Admin</a>
                 <a href="/credits" class="nav-link {{if eq .ActivePage "credits"}}active{{end}}">Crédits</a>
             </nav>
         </div>
@@ -28,6 +28,7 @@
         {{if eq .ContentPage "games_content"}}{{template "games_content" .}}{{end}}
         {{if eq .ContentPage "game_detail_content"}}{{template "game_detail_content" .}}{{end}}
         {{if eq .ContentPage "credits_content"}}{{template "credits_content" .}}{{end}}
+        {{if eq .ContentPage "admin_login_content"}}{{template "admin_login_content" .}}{{end}}
         {{if eq .ContentPage "admin_games_content"}}{{template "admin_games_content" .}}{{end}}
         {{if eq .ContentPage "admin_game_form_content"}}{{template "admin_game_form_content" .}}{{end}}
     </main>
