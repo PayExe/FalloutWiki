@@ -37,7 +37,7 @@
     {{range .Games}}
     <article class="game-card card reveal">
         <a href="/games/{{.ID}}" class="game-cover-wrap">
-            <img class="game-cover" src="{{.ImageURL}}" alt="{{.Title}}">
+            <img class="game-cover" src="{{.ImageURL}}" alt="{{.Title}}" onerror="this.outerHTML='<p class=img-fallback>Image indisponible</p>'">
             <span class="year-badge">{{.ReleaseYear}}</span>
         </a>
         <div class="game-body">

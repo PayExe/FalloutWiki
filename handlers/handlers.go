@@ -805,6 +805,19 @@ func resolveAssetURL(path string) string {
 	return baseURL + "/" + clean
 }
 
+func HealthHandler(c *gin.Context) {
+	sqlDB, err := database.DB.DB()
+	if err != nil {
+		c.JSON(http.StatusServiceUnavailable, gin.H{"status": "error", "message": "BDD introuvable"})
+		return
+	}
+	if err := sqlDB.Ping(); err != nil {
+		c.JSON(http.StatusServiceUnavailable, gin.H{"status": "error", "message": "Connexion impossible"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"status": "ok", "message": "Supabase connecte"})
+}
+
 func normalizeFilter(value string) string {
 	return strings.TrimSpace(strings.ToLower(value))
 }

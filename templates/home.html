@@ -56,7 +56,7 @@
     <div class="featured-grid">
         {{range .FeaturedGames}}
         <a href="/games/{{.ID}}" class="featured-item">
-            <img src="{{.ImageURL}}" alt="{{.Title}}">
+            <img src="{{.ImageURL}}" alt="{{.Title}}" onerror="this.outerHTML='<p class=img-fallback>Image indisponible</p>'">
             <strong>{{.Title}}</strong>
             <span>{{.ReleaseYear}} · {{.GameType}}</span>
         </a>

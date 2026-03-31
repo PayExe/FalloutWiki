@@ -46,6 +46,7 @@ func main() {
 	admin.POST("/games/:id/delete", handlers.AdminGameDeleteHandler)
 	admin.POST("/games/clear-tags", handlers.AdminGameClearTagsHandler)
 	router.GET("/credits", handlers.CreditsHandler)
+	router.GET("/health", handlers.HealthHandler)
 
 	port := os.Getenv("PORT")
 	if port == "" {
